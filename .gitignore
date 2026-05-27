@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+.env
+config.json
+/tmp/ym-cli-mpv.sock
+/tmp/ym-cli-cava.conf
