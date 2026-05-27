@@ -24,10 +24,10 @@ class YMApp(App):
         self.player = Player(on_track_end=self.handle_track_end)
         self.current_tracks = []
         self.current_track = None
-        self.theme = config.get_theme()
+        self.app_colors = config.get_theme()
         
     def get_css(self) -> str:
-        t = self.theme
+        t = self.app_colors
         return f"""
         Screen {{
             background: {t['background']};
