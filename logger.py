@@ -18,7 +18,7 @@ def setup_logger():
     
     # Create formatter and add it to the handlers
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.set_formatter(formatter)
+    fh.setFormatter(formatter)
     
     # Add handlers to the logger
     if not logger.handlers:
