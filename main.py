@@ -35,59 +35,69 @@ class YMApp(App):
         #main_layout {{
             layout: horizontal;
         }}
-        #sidebar {{
-            width: 30;
+        #sidebar {
+            width: 40;
             background: {t['sidebar_bg']};
             border-right: solid #333;
-        }}
-        #content_area {{
+        }
+        #content_area {
             width: 1fr;
-        }}
-        #search_container {{
+        }
+        #search_container {
             height: 3;
-            margin: 1 0;
+            margin: 1 1;
             display: none;
-        }}
-        #search_container.visible {{
+        }
+        #search_container.visible {
             display: block;
-        }}
-        #track_list {{
+        }
+        #track_list {
             width: 100%;
             background: {t['list_bg']};
-        }}
-        #footer_controls {{
-            height: 6;
+            padding: 1;
+        }
+        #footer_controls {
+            height: 7;
             background: {t['footer_bg']};
             border-top: solid #333;
+            padding: 1 4;
+        }
+        .track-item {
             padding: 1 2;
-        }}
-        .track-item {{
-            padding: 0 1;
-        }}
-        #cava_visualizer {{
-            width: 26;
             height: 3;
-            margin: 1 2;
-        }}
-        .nav-item {{
+            border-bottom: thin #333;
+        }
+        #cava_visualizer {
+            width: 36;
+            height: 8;
+            margin: 2 2;
+        }
+        .nav-item {
             padding: 1 2;
-        }}
-        .nav-item:hover {{
+            height: 3;
+        }
+        .nav-item:hover {
             background: #333;
-        }}
-        #now_playing_sidebar {{
+        }
+        #now_playing_sidebar {
             height: auto;
             border-bottom: solid #333;
-            padding: 1;
+            padding: 2;
             align: center middle;
-        }}
-        #like_button {{
-            min-width: 4;
-            height: 1;
+        }
+        #current_track_label {
+            text-style: bold;
+            color: {t['accent']};
+        }
+        #like_button {
+            min-width: 6;
+            height: 3;
             border: none;
             background: transparent;
             color: #555;
-        }}
+            text-style: bold;
+        }
+
         #like_button.liked {{
             color: #ff0000;
         }}

@@ -61,14 +61,30 @@ ascii_max_range = 15
         if not self.bars:
             return Text(" " * self.num_bars)
         
-        # Block characters with more levels (16 levels now)
-        chars = [" ", " ", "▂", "▂", "▃", "▃", "▄", "▄", "▅", "▅", "▆", "▆", "▇", "▇", "█", "█"]
-        output = ""
-        for val in self.bars:
-            idx = min(val, len(chars) - 1)
-            output += chars[idx]
+        # Block characters for different heights
+        chars = [" ", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
         
-        return Text(output, style="cyan")
+        # We'll render multi-line by calculating what char to show at each height level
+        height = 8  # Fixed height for the widget
+        lines = []
+        for h in range(height - 1, -1, -1):
+            line = ""
+            for val in self.bars:
+                # Map raw value (0-15) to our height level (0-7) and char index
+                # Each level in 'height' represents 2 levels in raw values approximately
+                effective_val = val / 2.0
+                if effective_val >= h + 1:
+                    line += chars[7]  # Full block
+                elif effective_val > h:
+                    # Partial block for the "top" of the bar
+                    remainder = effective_val - h
+                    idx = min(int(remainder * 8), 7)
+                    line += chars[idx]
+                else:
+                    line += " "
+            lines.append(line)
+        
+        return Text("\n".join(lines), style="cyan")
 
     def on_unmount(self):
         logger.info("CavaWidget unmounting")
