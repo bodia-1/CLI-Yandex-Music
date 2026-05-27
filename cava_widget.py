@@ -1,10 +1,10 @@
 import subprocess
 import os
-import shutil
 from textual.widgets import Static
 from textual import work
 from textual.reactive import reactive
 from rich.text import Text
+from logger import logger
 
 class CavaWidget(Static):
     bars = reactive([])
@@ -16,6 +16,7 @@ class CavaWidget(Static):
         self.config_path = "/tmp/ym-cli-cava.conf"
 
     def on_mount(self):
+        logger.info("CavaWidget mounted")
         self.create_cava_config()
         self.run_cava()
 
@@ -31,13 +32,14 @@ source = auto
 method = raw
 raw_target = /dev/stdout
 data_format = ascii
-ascii_max_range = 7
+ascii_max_range = 15
 """
         with open(self.config_path, "w") as f:
             f.write(config)
 
     @work(exclusive=True, thread=True)
     def run_cava(self):
+        logger.info("Starting Cava subprocess")
         self.cava_process = subprocess.Popen(
             ["cava", "-p", self.config_path],
             stdout=subprocess.PIPE,
@@ -48,7 +50,6 @@ ascii_max_range = 7
         for line in self.cava_process.stdout:
             if not line.strip():
                 continue
-            # Cava raw output format is "1;2;3;4;..."
             try:
                 values = [int(v) for v in line.strip().split(';') if v]
                 if values:
@@ -60,8 +61,8 @@ ascii_max_range = 7
         if not self.bars:
             return Text(" " * self.num_bars)
         
-        # Block characters for different heights
-        chars = [" ", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+        # Block characters with more levels (16 levels now)
+        chars = [" ", " ", "▂", "▂", "▃", "▃", "▄", "▄", "▅", "▅", "▆", "▆", "▇", "▇", "█", "█"]
         output = ""
         for val in self.bars:
             idx = min(val, len(chars) - 1)
@@ -70,6 +71,7 @@ ascii_max_range = 7
         return Text(output, style="cyan")
 
     def on_unmount(self):
+        logger.info("CavaWidget unmounting")
         if self.cava_process:
             self.cava_process.terminate()
         if os.path.exists(self.config_path):
